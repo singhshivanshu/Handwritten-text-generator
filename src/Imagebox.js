@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
@@ -43,38 +42,36 @@ function Imagebox(props) {
 
   return (
     <div>
-      <div style={{ display: "inline-flex", marginTop: "2rem" }}>
-        <Jumbotron fluid id="jumbotron-uploader">
-          <Container id="uploader">
-            <ReactFileReader handleFiles={handleFiles} base64={true}>
-              <React.Fragment>
-                <Button variant="outline-info" className="btn">
-                  <img src={Img} alt="%%" />
-                  <br />
-                  Click to upload
-                </Button>
-              </React.Fragment>
-            </ReactFileReader>
-          </Container>
-        </Jumbotron>
+      <div style={{ marginTop: "2rem" }}>
+        <div className="row justify-content-center">
+          <ReactFileReader handleFiles={handleFiles} base64={true}>
+            <React.Fragment>
+              <Button variant="outline-primary" className="btn imageMedia">
+                <img src={Img} alt="%%" />
+                <br />
+                Click to upload
+              </Button>
+            </React.Fragment>
+          </ReactFileReader>
+        </div>
       </div>
 
       {file && (
-        <div style={{ display: "inline-flex", marginTop: "2rem" }}>
-          <Jumbotron fluid style={{ width: "500px", display: "flex" }}>
-            <Container>
+        <div className="container pt-5 pb-5">
+          <div className="row justify-content-around">
+            <div className="col-md-7 pt-5 image">
               <h3 className="result-text">Original Image</h3>
               <img
                 src={URL.createObjectURL(file.fileList[0])}
                 alt="hello"
-                style={{ width: "450px", height: "500px" }}
+                style={{ width: "450px", paddingBottom: '30px', borderRadius: '10px' }}
+                className="imageMedia"
               />
-            </Container>
-          </Jumbotron>
+            </div>
 
-          <Jumbotron fluid style={{ width: "500px", display: "flex" }}>
-            <Container>
-              {data.data && data.data.responses[0].textAnnotations !== undefined ? (
+            <div className="col-md-3 pt-5 image">
+              {data.data &&
+              data.data.responses[0].textAnnotations !== undefined ? (
                 <div>
                   <h3 className="result-text">Generated Text</h3>
                   {data.data.responses[0].textAnnotations.map((elem) => {
@@ -90,10 +87,10 @@ function Imagebox(props) {
                   })}
                 </div>
               ) : (
-                <h2>Plze upload a valid image with text..</h2>
+                <h2>Please upload a valid image with text..</h2>
               )}
-            </Container>
-          </Jumbotron>
+            </div>
+          </div>
         </div>
       )}
     </div>
