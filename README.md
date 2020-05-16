@@ -28,6 +28,6 @@ npm start
 
 ### Screenshot
 
-<img src="./src/screenshot.png" width="500px" height="300px"/>
+<img src="./src/screenshot.png" width="800px" height="500px"/>
 
 - pardon for the not so good handwriting.. 
