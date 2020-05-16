@@ -28,6 +28,6 @@ npm start
 
 ### Screenshot
 
-- <img src="/screenshot.png" />
+<img src="./src/screenshot.png" width="500px" height="300px"/>
 
-- ![screenshot](/screenshot.png)
+- pardon for the not so good handwriting.. 
