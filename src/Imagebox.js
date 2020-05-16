@@ -24,7 +24,7 @@ function Imagebox(props) {
         requests: [
           {
             image: {
-              content: files.base64.slice(23),
+              content: files.base64.replace(/^data:image\/[a-z]+;base64,/, ""),
             },
             features: [
               {
@@ -39,11 +39,9 @@ function Imagebox(props) {
         "Content-Type": "application/json",
       },
     }).then((params) => setData(params.data.responses[0].textAnnotations));
-    // setDate(params)
+  
   };
 
-  console.log("main:", file);
-  console.log(data, "dsff");
 
   return (
     <div>
