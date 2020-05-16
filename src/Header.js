@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 function Header() {
   return (
-    <Navbar bg="dark" variant="dark" style ={{height: "100px"}}>
+    <Navbar  variant="dark" style ={{height: "100px"}}>
       <Navbar.Brand id ="header-name" className="mx-auto">Ymir Assignment</Navbar.Brand>
     </Navbar>
   );

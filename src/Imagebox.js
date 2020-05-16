@@ -6,6 +6,7 @@ import axios from "axios";
 import ReactFileReader from "react-file-reader";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import Img from "./upload-icon.png";
 
 function Imagebox(props) {
   const [file, setFile] = useState(null);
@@ -15,13 +16,10 @@ function Imagebox(props) {
     visionAPI(files);
   };
 
-  const visionAPI = (files) => { 
-      
-    console.log(process.env)
+  const visionAPI = (files) => {
     axios({
       method: "POST",
-      url:
-        `https://vision.googleapis.com/v1/images:annotate?key=${process.env.REACT_APP_API_KEY}`,
+      url: `https://vision.googleapis.com/v1/images:annotate?key=${process.env.REACT_APP_API_KEY}`,
       data: {
         requests: [
           {
@@ -50,11 +48,13 @@ function Imagebox(props) {
   return (
     <div>
       <div style={{ display: "inline-flex", marginTop: "2rem" }}>
-        <Jumbotron style={{ width: "600px" }}>
-          <Container>
+        <Jumbotron fluid id="jumbotron-uploader">
+          <Container id="uploader">
             <ReactFileReader handleFiles={handleFiles} base64={true}>
               <React.Fragment>
                 <Button variant="outline-info" className="btn">
+                  <img src={Img} alt="%%" />
+                  <br />
                   Click to upload
                 </Button>
               </React.Fragment>
@@ -65,24 +65,28 @@ function Imagebox(props) {
 
       {file && (
         <div style={{ display: "inline-flex", marginTop: "2rem" }}>
-          <Jumbotron fluid style={{ width: "600px" }}>
+          <Jumbotron fluid style={{ width: "500px" , display: "flex"}}>
             <Container>
-              <div>
-                <img
-                  src={URL.createObjectURL(file.fileList[0])}
-                  alt="hello"
-                  style={{ width: "250ox", height: "300px" }}
-                />
-                {data.map((elem) => {
-                  return (
-                    <Card>
-                      <ListGroup variant="flush">
-                        <ListGroup.Item>{elem.description}</ListGroup.Item>
-                      </ListGroup>
-                    </Card>
-                  );
-                })}
-              </div>
+              <h3 className="result-text">Original Image</h3>
+              <img
+                src={URL.createObjectURL(file.fileList[0])}
+                alt="hello"
+                style={{ width: "450px", height: "500px" }}
+              />
+            </Container>
+          </Jumbotron>
+          <Jumbotron fluid style={{ width: "500px", display: "flex" }}>
+            <Container>
+            <h3 className="result-text">Generated Text</h3>
+              {data.map((elem) => {
+                return (
+                  <Card>
+                    <ListGroup variant="flush">
+                      <ListGroup.Item id="list-item">{elem.description}</ListGroup.Item>
+                    </ListGroup>
+                  </Card>
+                );
+              })}
             </Container>
           </Jumbotron>
         </div>

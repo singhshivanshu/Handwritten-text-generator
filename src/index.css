@@ -4,3 +4,31 @@
   letter-spacing: 3px;
 }
 
+.btn {
+  width: 60rem;
+  height: 14rem;
+}
+
+#uploader {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+#jumbotron-uploader {
+  padding: 0;
+}
+
+#list-item {
+  border-radius: 0;
+}
+
+body {
+  background-image: url("./dark-sky.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.result-text {
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+}
