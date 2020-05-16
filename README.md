@@ -24,3 +24,10 @@ npm start
 - React Bootstrap
 - Axios
 - React file reader
+
+
+### Screenshot
+
+- <img src="/screenshot.png" />
+
+- ![screenshot](/screenshot.png)
