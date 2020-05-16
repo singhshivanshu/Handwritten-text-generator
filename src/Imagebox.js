@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -15,11 +15,13 @@ function Imagebox(props) {
     visionAPI(files);
   };
 
-  const visionAPI = (files) => {
+  const visionAPI = (files) => { 
+      
+    console.log(process.env)
     axios({
       method: "POST",
       url:
-        "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAnqhvoLgY0djZVkr_BgyyMuNvZl3LR9mk",
+        `https://vision.googleapis.com/v1/images:annotate?key=${process.env.REACT_APP_API_KEY}`,
       data: {
         requests: [
           {
