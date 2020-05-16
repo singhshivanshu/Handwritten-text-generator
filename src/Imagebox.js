@@ -1,48 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
+import axios from "axios";
+import ReactFileReader from "react-file-reader";
 
 function Imagebox(props) {
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const handleFiles = (files) => {
+    visionAPI(files);
+  };
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
+  const visionAPI = (files) => {
+    console.log(files.base64);
+    axios({
+      method: "POST",
+      url:
+        "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAnqhvoLgY0djZVkr_BgyyMuNvZl3LR9mk",
+      data: {
+        requests: [
+          {
+            image: {
+              content: files.base64.slice(23),
+            },
+            features: [
+              {
+                type: "DOCUMENT_TEXT_DETECTION",
+                maxResults: 1,
+              },
+            ],
+          },
+        ],
+      },
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then((params) => console.log(params));
+  };
 
   return (
-    <Jumbotron fluid>
-      <Container>
-        <section className="container">
-          <div {...getRootProps({ className: "dropzone" })}>
-            <input {...getInputProps()} />
-            {files.length === 0 && (
-                <p className="drag-text ">Select the image</p>
-            )
-            }
-            {files.length !== 0 && (
-                <p className="drag-text ">{files}</p>
-            )}
-          </div>
-          <aside>
-              {files.length !== 0 && (
-                  
-            <Button className ="btn-detect" variant="primary" size="lg" active>
-              Detect
-            </Button>) }
-              
-              {files.length === 0 && (
-                  <Button className ="btn-detect" variant="primary" size="lg" disabled>
-                  Detect
-                </Button>)
-              }
-          </aside>
-        </section>
-      </Container>
-    </Jumbotron>
+    <div style={{ display: "inline-flex", marginTop: "2rem" }}>
+      <Jumbotron fluid style={{width: "600px", borderRadius: "5px"}}>
+        <Container>
+          <ReactFileReader handleFiles={handleFiles} base64={true}>
+            <Button variant="outline-info"className="btn">Click to upload</Button>
+          </ReactFileReader>
+        </Container>
+      </Jumbotron>
+    </div>
   );
 }
 
