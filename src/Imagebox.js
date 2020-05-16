@@ -38,10 +38,8 @@ function Imagebox(props) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then((params) => setData(params.data.responses[0].textAnnotations));
-  
+    }).then((params) => setData(params));
   };
-
 
   return (
     <div>
@@ -63,7 +61,7 @@ function Imagebox(props) {
 
       {file && (
         <div style={{ display: "inline-flex", marginTop: "2rem" }}>
-          <Jumbotron fluid style={{ width: "500px" , display: "flex"}}>
+          <Jumbotron fluid style={{ width: "500px", display: "flex" }}>
             <Container>
               <h3 className="result-text">Original Image</h3>
               <img
@@ -73,18 +71,27 @@ function Imagebox(props) {
               />
             </Container>
           </Jumbotron>
+
           <Jumbotron fluid style={{ width: "500px", display: "flex" }}>
             <Container>
-            <h3 className="result-text">Generated Text</h3>
-              {data.map((elem) => {
-                return (
-                  <Card>
-                    <ListGroup variant="flush">
-                      <ListGroup.Item id="list-item">{elem.description}</ListGroup.Item>
-                    </ListGroup>
-                  </Card>
-                );
-              })}
+              {data.data && data.data.responses[0].textAnnotations !== undefined ? (
+                <div>
+                  <h3 className="result-text">Generated Text</h3>
+                  {data.data.responses[0].textAnnotations.map((elem) => {
+                    return (
+                      <Card>
+                        <ListGroup variant="flush">
+                          <ListGroup.Item id="list-item">
+                            {elem.description}
+                          </ListGroup.Item>
+                        </ListGroup>
+                      </Card>
+                    );
+                  })}
+                </div>
+              ) : (
+                <h2>Plze upload a valid image with text..</h2>
+              )}
             </Container>
           </Jumbotron>
         </div>
