@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import ReactFileReader from "react-file-reader";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
 function Imagebox(props) {
+  const [file, setFile] = useState(null);
+  const [data, setData] = useState([]);
   const handleFiles = (files) => {
+    setFile(files);
     visionAPI(files);
   };
 
   const visionAPI = (files) => {
-    console.log(files.base64);
     axios({
       method: "POST",
       url:
@@ -26,7 +29,6 @@ function Imagebox(props) {
             features: [
               {
                 type: "DOCUMENT_TEXT_DETECTION",
-                maxResults: 1,
               },
             ],
           },
@@ -36,18 +38,53 @@ function Imagebox(props) {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then((params) => console.log(params));
+    }).then((params) => setData(params.data.responses[0].textAnnotations));
+    // setDate(params)
   };
 
+  console.log("main:", file);
+  console.log(data, "dsff");
+
   return (
-    <div style={{ display: "inline-flex", marginTop: "2rem" }}>
-      <Jumbotron fluid style={{width: "600px", borderRadius: "5px"}}>
-        <Container>
-          <ReactFileReader handleFiles={handleFiles} base64={true}>
-            <Button variant="outline-info"className="btn">Click to upload</Button>
-          </ReactFileReader>
-        </Container>
-      </Jumbotron>
+    <div>
+      <div style={{ display: "inline-flex", marginTop: "2rem" }}>
+        <Jumbotron style={{ width: "600px" }}>
+          <Container>
+            <ReactFileReader handleFiles={handleFiles} base64={true}>
+              <React.Fragment>
+                <Button variant="outline-info" className="btn">
+                  Click to upload
+                </Button>
+              </React.Fragment>
+            </ReactFileReader>
+          </Container>
+        </Jumbotron>
+      </div>
+
+      {file && (
+        <div style={{ display: "inline-flex", marginTop: "2rem" }}>
+          <Jumbotron fluid style={{ width: "600px" }}>
+            <Container>
+              <div>
+                <img
+                  src={URL.createObjectURL(file.fileList[0])}
+                  alt="hello"
+                  style={{ width: "250ox", height: "300px" }}
+                />
+                {data.map((elem) => {
+                  return (
+                    <Card>
+                      <ListGroup variant="flush">
+                        <ListGroup.Item>{elem.description}</ListGroup.Item>
+                      </ListGroup>
+                    </Card>
+                  );
+                })}
+              </div>
+            </Container>
+          </Jumbotron>
+        </div>
+      )}
     </div>
   );
 }
