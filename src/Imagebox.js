@@ -5,14 +5,24 @@ import ReactFileReader from "react-file-reader";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Img from "./upload-icon.png";
+import {storage} from "./firebase/firebase"
 
 function Imagebox(props) {
+  const allInputs = {imgUrl: ''}
   const [file, setFile] = useState(null);
   const [data, setData] = useState([]);
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
+
+
+
+
+
   const handleFiles = (files) => {
     setFile(files);
     visionAPI(files);
+    handleFireBaseUpload(files);
   };
+
 
   const visionAPI = (files) => {
     axios({
@@ -38,6 +48,46 @@ function Imagebox(props) {
       },
     }).then((params) => setData(params));
   };
+
+ 
+
+
+  const handleFireBaseUpload = (files) => {
+
+    console.log(files)
+    // files.preventDefault()
+
+    if(file === '') {
+      console.error(`not an image, the image file is a ${typeof{file}}`)
+    }
+
+    const uploadTask = storage.ref(`images/${files.fileList[0].name}`).put(files.fileList[0])
+
+    uploadTask.on('state_changed', 
+    (snapShot) => {
+      
+      console.log(snapShot)
+    }, (err) => {
+      console.log(err)
+    }, () => {
+
+      storage.ref('images').child(files.fileList[0].name).getDownloadURL().then(fireBaseUrl => {
+        setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+      })
+    })
+
+  }
+
+  console.log('imageUrl',imageAsUrl)
+
+
+
+
+
+
+
+
+
 
   return (
     <div>
