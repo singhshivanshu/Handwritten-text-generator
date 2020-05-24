@@ -3,6 +3,7 @@
   font-family: sans-serif;
   letter-spacing: 3px;
   color: #007bff;
+
 }
 
 .btn {
@@ -40,8 +41,9 @@ body {
   border-radius: 10px;
 }
 
-@media(max-width: 460px) {
+@media (max-width: 460px) {
   .imageMedia {
     max-width: 250px;
   }
+ 
 }

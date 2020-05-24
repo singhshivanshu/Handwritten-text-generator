@@ -5,24 +5,21 @@ import ReactFileReader from "react-file-reader";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Img from "./upload-icon.png";
-import {storage} from "./firebase/firebase"
+import { storage } from "./firebase/firebase";
 
 function Imagebox(props) {
-  const allInputs = {imgUrl: ''}
+  const allInputs = { imgUrl: "" };
   const [file, setFile] = useState(null);
   const [data, setData] = useState([]);
-  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
-
-
-
-
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs);
 
   const handleFiles = (files) => {
     setFile(files);
     visionAPI(files);
     handleFireBaseUpload(files);
   };
-
+  // Uploaded image is first converted into base64 format
+  //Using google vision API to get text from the image
 
   const visionAPI = (files) => {
     axios({
@@ -49,45 +46,40 @@ function Imagebox(props) {
     }).then((params) => setData(params));
   };
 
- 
-
-
+  // uploaded image is being stored into google cloud.
   const handleFireBaseUpload = (files) => {
-
-    console.log(files)
     // files.preventDefault()
 
-    if(file === '') {
-      console.error(`not an image, the image file is a ${typeof{file}}`)
+    if (file === "") {
+      console.error(`not an image, the image file is a ${typeof { file }}`);
     }
 
-    const uploadTask = storage.ref(`images/${files.fileList[0].name}`).put(files.fileList[0])
+    const uploadTask = storage
+      .ref(`images/${files.fileList[0].name}`)
+      .put(files.fileList[0]);
 
-    uploadTask.on('state_changed', 
-    (snapShot) => {
-      
-      console.log(snapShot)
-    }, (err) => {
-      console.log(err)
-    }, () => {
-
-      storage.ref('images').child(files.fileList[0].name).getDownloadURL().then(fireBaseUrl => {
-        setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
-      })
-    })
-
-  }
-
-  console.log('imageUrl',imageAsUrl)
-
-
-
-
-
-
-
-
-
+    uploadTask.on(
+      "state_changed",
+      (snapShot) => {
+        console.log(snapShot);
+      },
+      (err) => {
+        console.log(err);
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(files.fileList[0].name)
+          .getDownloadURL()
+          .then((fireBaseUrl) => {
+            setImageAsUrl((prevObject) => ({
+              ...prevObject,
+              imgUrl: fireBaseUrl,
+            }));
+          });
+      }
+    );
+  };
 
   return (
     <div>
@@ -113,7 +105,11 @@ function Imagebox(props) {
               <img
                 src={URL.createObjectURL(file.fileList[0])}
                 alt="hello"
-                style={{ width: "450px", paddingBottom: '30px', borderRadius: '10px' }}
+                style={{
+                  width: "450px",
+                  paddingBottom: "30px",
+                  borderRadius: "10px",
+                }}
                 className="imageMedia"
               />
             </div>

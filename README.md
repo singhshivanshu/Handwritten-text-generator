@@ -1,4 +1,4 @@
-# YMIR Assignment
+# Handwritten text recognizer
 
 
 ## About
